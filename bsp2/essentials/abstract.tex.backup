@@ -1,0 +1,11 @@
+\begin{abstract}
+Ein weit verbreitetes Tool zur Darstellung und Verwendung von graphischen Zeichnungen am Computer ist das Computer Aided Design. Das DLR verwendet zur Verbesserung des Wirkungsgrads eines Triebwerks und die daraus resultierende Optimierung der Schaufeln den Bladegenerator. Da dieser keine Schnittstelle zu CAD-Programmen besitzt, was den Austausch der berechneten Daten erschwert, soll diese mithilfe der Open Cascade Bibliothek erstellt werden. Die Erweiterung führte zu einer einfachen, optionalen Möglichkeit, die Schaufeln in Iges oder Step Formate zu exportieren, falls dies erforderlich oder gewünscht ist.
+
+Je nach Rotationsgeschwindigkeit eines Verdichters ändert sich der Winkel der anströmenden Luft. Durch einen Schlechten Winkel kann das Leistungspotential des Verdichters verringert werden. Zur Kompensation soll vor die erste Verdichterstufe eine zweiteilige Schaufel mit beweglichem hinteren Teil eingesetzt werden, die die Luftrichtung anpasst. Zur Berechnung einer solchen Schaufel wird ein Programm entwickelt, das aus einer Schaufel eine zweigeteilte, aufgrund eine Eingabeparameter, berechnet.
+\\
+\\
+\\
+A popular tool to represent and use graphical designs at the computer is computer aided design. To improve effectiveness of turbomachinery and resulting optimisations of the blades, DLR uses a program called Bladegenerator. Bladegenerator has no functioning interface to CAD-programs. This hinders the exchange of calculated data. Open Cascade Library should be used to write an interface. The enhancement of Bladegenerator gives users options to export blades to iges or step.
+
+Based on rotation velocity of a compressor, the angle between air and blade changes. A bad angle decreases the achievement potential of compressor. For compensation a split blade is placed infront of the first stage of the compressor. The rear part is moveable in order to adjust the air direction. A program is developed to compute such a split blade, by given parameters.
+\end{abstract}	

@@ -1,0 +1,8 @@
+\addchap{Abkürzungsverzeichnis}
+
+\begin{acronym}[LONGEST]
+	\acro{DLR}{\textbf{D}eutsches Zentrum für \textbf{L}uft- und \textbf{R}aumfahrt}
+	\acro{AT-FUV}{\textbf{A}ntriebs\textbf{t}echnik - \textbf{F}an und \textbf{V}erdichter}
+\end{acronym}
+
+\clearpage

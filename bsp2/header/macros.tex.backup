@@ -1,0 +1,86 @@
+%-------------------------------------
+%-- Informationen für das Deckblatt --
+%-------------------------------------
+\newcommand{\studiengang}{\Large\sf Studiengang Informationstechnik}
+
+\newcommand{\titel}{Bericht zum Modul Praxis I}
+
+\newcommand{\praxisA}{Praxisphase 1: 07. Januar 2016 - 25. März 2016\\}
+\newcommand{\praxisB}{Praxisphase 2: 01. Juli 2016 - 30. September 2016\\}
+
+\newcommand{\themaA}{Thema 1:\\Anbindung des CAD-Kernels an den Bladegenerator}														
+\newcommand{\themaB}{Thema 2:\\Thema der zweiten Phase}
+
+\newcommand{\autor}{\bf Stefan Limbach}
+\newcommand{\matrikelnr}{\it - Matrikelnr.: 5155255 -}
+\newcommand{\jahrgang}{\it - Kurs: TINF15ITIN -}
+
+\newcommand{\dlr}{Deutsches Zentrum für\\ Luft- und Raumfahrt e.V.\\ in der Helmholtz-Gemeinschaft}
+\newcommand{\standort}{Köln - Porz}
+
+\newcommand{\institut}{Institut für Antriebstechnik}
+\newcommand{\abteilung}{Abteilung: Fan und Verdichter}
+\newcommand{\betreuer}{Dr.Ing.Dipl.Math.\tiny{ }Christian Voß}
+
+%----------------------------------
+%-- Vordefinierte Formatierungen --
+%----------------------------------
+\newcommand{\equname}{Gleichung}						% \equname		-> Gleichung
+
+% Darstellung von Gleichungen, welche unformatiert (nicht zentriert und ohne Nummerierung) ausgegeben werden:
+\newcommand{\EQ}[1]
+{ 
+	\ensuremath{#1}
+}
+
+%---------------------------------------------------------
+
+% Darstellung von Abbildungenen mit...
+
+\newcommand{\FG}[4]
+{ 
+	\vspace{2mm}
+	 
+	\begin{figure}[!htb]
+	
+		\centering
+		
+			\includegraphics[height = #2]{#1} 	
+			\caption{#3}
+			\label{pic:#4}
+			 
+	\end{figure}
+}
+
+% ... und Referenz
+\newcommand{\FR}[1]{\figurename~\ref{pic:#1}}
+%-------------------------------------------------------
+
+% Darstellung von Tabellen mit...
+
+\newcommand{\TB}[4]
+{ 
+	\vspace{2mm}
+	 
+	\begin{table}[#1]
+	
+		\centering
+	
+			\input{#2} 			 
+	
+		\caption{#3}
+		\label{tab:#4}
+		
+	\end{table}
+}
+
+% ... und Referenz
+\newcommand{\TR}[1]{\tablename~\ref{tab:#1}}
+
+
+% ---------Schriftformatierungen------------------ 
+\newcommand{\Name}[1]{\emph{#1}}
+\newcommand{\Fachbegriff}[1]{\textbf{#1}} 
+\newcommand{\Code}[1]{\texttt{#1}}
+\newcommand{\Datei}[1]{\texttt{#1}}
+\newcommand{\Datentyp}[1]{\textsf{#1}}

@@ -1,0 +1,142 @@
+\section{Weiterer Quellcode}
+\lstset {language=C++}
+\begin{lstlisting}[caption={Konvertierung von SURFACE zu TopoDS\_Shape},label={lst:convert}]
+    //Konvertierung des Grades
+    int m_udegree = surf->p;
+    int m_vdegree = surf->q;
+    
+    //Konvertierung der Knotenvektoren
+    KNOTVEKTOR* uknots = surf->knu;
+    TColStd_Array1OfInteger uMults;
+    TColStd_Array1OfReal uKnots;
+    if (uknots) {
+        for (int i = 0; i <= uknots->m; i++) {
+            uKnots.SetValue(pos, uknots->U[i]);
+	    uMults.SetValue(pos, 1);
+	    pos++;
+        }
+    }
+    
+    KNOTVEKTOR* vknots = surf->knv;
+    TColStd_Array1OfInteger vMults;
+    TColStd_Array1OfReal vKnots;
+    if (vknots) {
+        for (int i = 0; i <= vknots->m; i++) {
+            vKnots.SetValue(pos, vknots->U[i]);
+	    vMults.SetValue(pos, 1);
+	    pos++;
+        }
+    }
+    
+    //Konvertierung des Kontrollnetzes
+    TColgp_Array2OfPnt cpnts(1, _nu, 1, _nv);
+    TColStd_Array2OfReal weights(1, _nu, 1, _nv);
+    int indexList;
+    for (unsigned int j = 0; j < _nv; j++) {
+      for (unsigned int i = 0; i < _nu; i++) {
+	const Point3d p;
+	p.x = controlPoints->Pw[i][j].x; //Kontrollpuntke aus SURFACE
+	p.y = controlPoints->Pw[i][j].y;
+	p.z = controlPoints->Pw[i][j].z;
+	p.w = controlPoints->Pw[i][j].w;
+	cpnts.SetValue(iu+1, iv+1, gp_Pnt(p.x, p.y, p.z, p.w));	//Punkte fuer TopoDS_Shape
+      }
+    }
+    
+    Handle_Geom_BSplineSurface surf = NULL;
+    surf = new Geom_BSplineSurface(cpnts, uKnots, vKnots, Mults, vMults, m_udegree, m_vdegree);
+    TopoDS_Shape result = BRepBuilderAPI_MakeFace(surf, Precision::Confusion()).Shape();
+    return result;
+\end{lstlisting}
+\clearpage
+
+\lstset {language=C++}
+\begin{lstlisting}[caption={Subtrahieren von zwei Körpern},label={lst:subst}]
+TopoDS_Shape performCut(TopoDS_Shape *_pshape1, TopoDS_Shape _pshape2){
+  
+  BRepAlgoAPI_Cut cutter(*_pshape1, _pshape2);
+  cutter.Build();
+  TopoDS_Shape result = cutter.Shape();
+  
+  TopTools_IndexedMapOfShape bladeMap;
+  TopExp::MapShapes(result, TopAbs_FACE, bladeMap);
+  
+  try
+  {
+    BRepBuilderAPI_Sewing sewer;
+    sewer.Add(bladeMap(1));sewer.Add(bladeMap(2));sewer.Add(bladeMap(3));sewer.Add(bladeMap(4));sewer.Add(bladeMap(5));
+    sewer.Perform();
+    BRepBuilderAPI_MakeSolid solidMaker(TopoDS::Shell(sewer.SewedShape()));
+    TopoDS_Shape solid = solidMaker.Solid();
+    ShapeFix_Solid fixer(TopoDS::Solid(solid));
+    fixer.FixShellTool()->FixFaceTool()->FixIntersectingWires();
+    fixer.Perform();
+    solid = fixer.Shape();
+    
+    result = solid;
+  }
+  catch (Standard_Failure err)
+  {
+    printf("\t\t\tError: something went wrong while stitching the solid blade!\n\t\t\tOpenCASCADE-Error: %s\n", err.GetMessageString());exit(EXIT_FAILURE);
+  }
+  
+  try
+  {
+    BRepBuilderAPI_Sewing sewer;
+    sewer.Add(bladeMap(6));sewer.Add(bladeMap(7));sewer.Add(bladeMap(8));sewer.Add(bladeMap(9));
+    sewer.Perform();
+    BRepBuilderAPI_MakeSolid solidMaker(TopoDS::Shell(sewer.SewedShape()));
+    TopoDS_Shape solid = solidMaker.Solid();
+    ShapeFix_Solid fixer(TopoDS::Solid(solid));
+    fixer.FixShellTool()->FixFaceTool()->FixIntersectingWires();
+    fixer.Perform();
+    solid = fixer.Shape();
+    
+    *_pshape1 = solid;
+  }
+  catch (Standard_Failure err)
+  {
+    printf("\t\t\tError: something went wrong while stitching the solid blade!\n\t\t\tOpenCASCADE-Error: %s\n", err.GetMessageString());exit(EXIT_FAILURE);
+  }
+  return result;
+}
+\end{lstlisting}
+\clearpage
+
+\lstset {language=C++}
+\begin{lstlisting}[caption={Exemplarisches Abspeichern},label={lst:speicher}]
+void printCpol(CPOLYGON *Cpol, char varName[50], FILE *fp){
+  char temp[50];
+  strcpy(temp, varName);
+  strcat(temp, "n");
+  printFlag(Cpol->n, temp, fp);
+  for (int i = 0; i < Cpol->n; i++){
+   char pw[50];
+   strcpy(pw, varName);
+   strcat(pw, "Pw");
+   char integer[20];
+   sprintf(integer, "%i",i);
+   strcat(pw, integer);
+   printCpoint(&(Cpol->Pw[i]), pw, fp); 
+  }
+  fprintf(fp, "\nEndOfCpol\n");
+}
+\end{lstlisting}
+\clearpage
+
+\lstset {language=C++}
+\begin{lstlisting}[caption={Eine Schaufel und ihre Teilstrukturen},label={lst:struct}]
+
+
+\end{lstlisting}
+\clearpage
+
+\section{Zusätzliche Abbildungen}
+
+\begin{figure}[h] 
+    \subfigure[Seitliche Ansicht]{\includegraphics[width=0.49\textwidth]{Cut.png}}
+    \subfigure[Frontale Ansicht]{\includegraphics[width=0.49\textwidth]{Cut1.png}}
+\caption{Testkörper zum Herausschneiden}
+\label{fig:Cut}
+\end{figure} 
+\clearpage
